@@ -60,3 +60,7 @@ SaleCondition
 2 - As colunas categóricas foram convertidas para números através do módulo sklearn.preprocessing.LabelEncoder
 3 - Algumas colunas foram removidas arbitrariamente, por se tratarem de categorias, na minha opinião, subjetivas demais.
     São elas: ["BsmtFinType1", "BsmtFinType2", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive"]
+4 - Ao tentar carregar os dados de teste, separadamente dos dados de treinamento, houve erros devido a novas categorias.
+Resolvi copiar a lista exaustiva do arquivo `data_description.txt` e formatá-la em um arquivo. Para isso:
+    a) O comando `awk '{print $1}' data_description.txt > easier.txt` mais expressões regulares e o editor de texto Visual Studio Code facilitaram o trabalho.
+    b) Expressões regulares também foram utilizadas para corrigir typos e informações faltantes nos dados de treinamento e de teste, evitando edição manual.

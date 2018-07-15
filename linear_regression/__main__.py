@@ -1,37 +1,271 @@
 from linear_regression.loader import Loader
+import pandas as pd
 
-categorical = [
-    "MSSubClass",
-    "MSZoning",
-    "Street",
-    "Alley",
-    "LotShape",
-    "LandContour",
-    "Utilities",
-    "LotConfig",
-    "LandSlope",
-    "Neighborhood",
-    "Condition1",
-    "Condition2",
-    "BldgType",
-    "HouseStyle",
-    "RoofStyle",
-    "RoofMatl",
-    "Exterior1st",
-    "Exterior2nd",
-    "MasVnrType",
-    "MasVnrArea",
-    "Foundation",
-    "Heating",
-    "HeatingQC",
-    "CentralAir",
-    "Electrical",
-    "Functional",
-    "GarageType",
-    "MiscFeature",
-    "SaleType"
+categorical = {
+    "MSSubClass": [
+        "20",
+        "30",
+        "40",
+        "45",
+        "50",
+        "60",
+        "70",
+        "75",
+        "80",
+        "85",
+        "90",
+        "120",
+        "150",
+        "160",
+        "180",
+        "190"
+    ],
+    "MSZoning": [
+        "A",
+        "C",
+        "C (all)",
+        "FV",
+        "I",
+        "RH",
+        "RL",
+        "RP",
+        "RM"
+    ],
+    "Street": [
+        "Grvl",
+        "Pave"
+    ],
+    "Alley": [
+        "Grvl",
+        "Pave",
+        "NA"
+    ],
+    "LotShape": [
+        "Reg",
+        "IR1",
+        "IR2",
+        "IR3"
+    ],
+    "LandContour": [
+        "Lvl",
+        "Bnk",
+        "HLS",
+        "Low",
+    ],
+    "Utilities": [
+        "AllPub",
+        "NoSewr",
+        "NoSeWa",
+        "ELO"
+    ],
+    "LotConfig": [
+        "Inside",
+        "Corner",
+        "CulDSac",
+        "FR2",
+        "FR3"
+    ],
+    "LandSlope": [
+        "Gtl",
+        "Mod",
+        "Sev"
+    ],
+    "Neighborhood": [
+        "Blmngtn",
+        "Blueste",
+        "BrDale",
+        "BrkSide",
+        "ClearCr",
+        "CollgCr",
+        "Crawfor",
+        "Edwards",
+        "Gilbert",
+        "IDOTRR",
+        "MeadowV",
+        "Mitchel",
+        "Names",
+        "NoRidge",
+        "NPkVill",
+        "NridgHt",
+        "NWAmes",
+        "OldTown",
+        "SWISU",
+        "Sawyer",
+        "SawyerW",
+        "Somerst",
+        "StoneBr",
+        "Timber",
+        "Veenker",
+    ],
+    "Condition1": [
+        "Artery",
+        "Feedr",
+        "Norm",
+        "RRNn",
+        "RRAn",
+        "PosN",
+        "PosA",
+        "RRNe",
+        ''"RRAe"
+    ],
+    "Condition2": [
+        "Artery",
+        "Feedr",
+        "Norm",
+        "RRNn",
+        "RRAn",
+        "PosN",
+        "PosA",
+        "RRNe",
+        "RRAe"
+    ],
+    "BldgType": [
+       "1Fam",
+       "2FmCon",
+       "Duplex",
+       "TwnhsE",
+       "TwnhsI"
+    ],
+    "HouseStyle": [
+        "1Story",
+        "1.5Fin",
+        "1.5Unf",
+        "2Story",
+        "2.5Fin",
+        "2.5Unf",
+        "SFoyer",
+        "SLvl"
+    ],
+    "RoofStyle": [
+        "Flat",
+        "Gable",
+        "Gambrel",
+        "Hip",
+        "Mansard",
+        "Shed"
+    ],
+    "RoofMatl": [
+        "ClyTile",
+        "CompShg",
+        "Membran",
+        "Metal",
+        "Roll",
+        "Tar&Grv",
+        "WdShake",
+        "WdShngl"
+    ],
+    "Exterior1st": [
+       "AsbShng",
+       "AsphShn",
+       "BrkComm",
+       "BrkFace",
+       "CBlock",
+       "CemntBd",
+       "HdBoard",
+       "ImStucc",
+       "MetalSd",
+       "Other",
+       "Plywood",
+       "PreCast",
+       "Stone",
+       "Stucco",
+       "VinylSd",
+       "Wd Sdng",
+       "WdShing"
+    ],
+    "Exterior2nd": [
+       "AsbShng",
+       "AsphShn",
+       "BrkComm",
+       "BrkFace",
+       "CBlock",
+       "CemntBd",
+       "HdBoard",
+       "ImStucc",
+       "MetalSd",
+       "Other",
+       "Plywood",
+       "PreCast",
+       "Stone",
+       "Stucco",
+       "VinylSd",
+       "Wd Sdng",
+       "WdShing"
+    ],
+    "Foundation": [
+        "BrkTil",
+        "CBlock",
+        "PConc",
+        "Slab",
+        "Stone",
+        "Wood"
+    ],
+    "Heating": [
+        "Floor",
+        "GasA",
+        "GasW",
+        "Grav",
+        "OthW",
+        "Wall",
+    ],
+    "HeatingQC": [
+        "Ex",
+        "Gd",
+        "TA",
+        "Fa",
+        "Po"
+    ],
+    "CentralAir": [
+        "N",
+        "Y"
+    ],
+    "Electrical": [
+        "SBrkr",
+        "FuseA",
+        "FuseF",
+        "FuseP",
+        "Mix"
+    ],
+    "Functional": [
+        "Typ",
+        "Min1",
+        "Min2",
+        "Mod",
+        "Maj1",
+        "Maj2",
+        "Sev",
+        "Sal"
+    ],
+    "GarageType": [
+        "2Types",
+        "Attchd",
+        "Basment",
+        "BuiltIn",
+        "CarPort",
+        "Detchd",
+        "NA"
+    ],
+    "MiscFeature": [
+        "Elev",
+        "Gar2",
+        "Othr",
+        "Shed",
+        "TenC",
+        "NA"
+    ],
+    "SaleType": [
+        "WD",
+        "CWD",
+        "VWD",
+        "New",
+        "COD",
+        "Con",
+        "ConLw",
+        "ConLI",
+        "ConLD",
+        "Oth"
     ]
-
+}
 ordinal = [
     {
         "col": "OverallQual",
@@ -170,7 +404,52 @@ ordinal = [
     }
 ]
 
-remove = ["BsmtFinType1", "BsmtFinType2", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive"]
+remove = [
+    "MasVnrArea",
+    "MasVnrType",
+    "BsmtFinType1",
+    "BsmtFinType2",
+    "GarageFinish",
+    "GarageQual",
+    "GarageCond",
+    "PavedDrive"
+    ]
 
-train_ld = Loader('./linear_regression/dataset/train.csv')
-df_train = train_ld.preprocess(categorical, ordinal, remove)
+train_filename = './linear_regression/dataset/train.csv'
+test_filename = './linear_regression/dataset/test.csv'
+
+# Load training data
+print('Loading training data...', end='')
+train_loader = Loader(train_filename, categorical, ordinal, remove)
+X_train, y_train = train_loader()
+print(" Done!\nLoaded training data from file: '"+train_filename+"'")
+
+# Load test data
+print('Loading test data...', end='')
+test_loader = Loader(test_filename, categorical, ordinal, remove)
+if test_filename.split('.')[-1] != "ready":
+    rows, cols = test_loader.data.shape
+    test_loader.data = pd.read_csv(test_filename)
+    test_loader.data = test_loader.data.join(
+        pd.DataFrame(
+            {'SalePrice': [0]*rows}
+            )
+        )
+    test_loader.data = test_loader.remove(test_loader.data, remove)
+    test_loader.data = test_loader.process_ordinal(
+        test_loader.data,
+        ordinal,
+        train_loader.ordinal_encoder
+        )
+    test_loader.data = test_loader.process_categorical(
+        test_loader.data,
+        categorical,
+        train_loader.label_encoders,
+        train_loader.one_hot_encoder
+        )
+    test_loader.data = test_loader.set_nan_to_median(test_loader.data)
+    test_loader.data = test_loader.normalize(test_loader.data)
+    X_test, _ = test_loader()
+else:
+    X_test, _ = test_loader()
+print(" Done!\nLoaded test data from file: '"+test_filename+"'")
