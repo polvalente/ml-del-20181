@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn import preprocessing
+import category_encoders as ce
 
 
 class Loader():
@@ -7,15 +8,15 @@ class Loader():
         self.filename = filename
         self.data = pd.read_csv(filename)
 
-    def pre_process(self, categorical_col_names, ordinal_col_names, remove_col_names):
-        self.data = self.process_ordinal(self.data, ordinal_col_names)
-        self.data = self.process_categorical(self.data, categorical_col_names)
+    def pre_process(self, categorical_col_names, ordinal_mapping, remove_col_names):
         self.data = self.remove(self.data, remove_col_names)
+        self.data = self.process_ordinal(self.data, ordinal_mapping)
+        self.data = self.process_categorical(self.data, categorical_col_names)
         self.data = self.normalize(self.data)
 
     def normalize(self, data):
         "normalizes through min-max normalization"
-        normalized = (data-data.min())/(data.max() - data.min())
+        normalized = preprocessing.minmax_scale(data)
         return normalized
 
     def process_categorical(self, data, col_names, label_encoders=None, one_hot_encoder=None):
@@ -35,21 +36,32 @@ class Loader():
             data[col] = label_encoder.transform(data[col].astype(str))
 
         if one_hot_encoder is None:
-            one_hot_encoder = preprocessing.OneHotEncoder(col_names)
+            one_hot_encoder = ce.one_hot.OneHotEncoder(cols=col_names, return_df=True)
             one_hot_encoder.fit(data)
             self.one_hot_encoder = one_hot_encoder
 
         data = one_hot_encoder.transform(data)
         return data
 
-    def process_ordinal(self, data, col_names, ordinal_encoder=None):
+    def process_ordinal(self, data, mapping, ordinal_encoder=None):
         if ordinal_encoder is None:
-            ordinal_encoder = preprocessing.LabelEncoder()
-            ordinal_encoder.fit(data[col_names])
-        self.ordinal_encoder = ordinal_encoder
+            ordinal_encoder = ce.ordinal.OrdinalEncoder(
+                mapping=mapping,
+                cols=[m['col'] for m in mapping],
+                return_df=True
+                )
+            ordinal_encoder.fit(data)
         data = ordinal_encoder.transform(data)
+        # if ordinal_encoders is None:
+        #     ordinal_encoders = [ce.ordinal.OrdinalEncoder() for _ in range(len(col_names))]
+
+        # for ordinal_encoder, m_dict in zip(ordinal_encoders, mappings):
+        #     ordinal_encoder.fit(data[col], mapping=mapping)
+        #     data[col] = ordinal_encoder.transform(data[col])
+
+        self.ordinal_encoders = ordinal_encoder
         return data
 
     def remove(self, data, col_names):
-        data.drop(col_names)
+        data = data.drop(columns=col_names)
         return data
