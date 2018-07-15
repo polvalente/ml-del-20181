@@ -173,4 +173,4 @@ ordinal = [
 remove = ["BsmtFinType1", "BsmtFinType2", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive"]
 
 train_ld = Loader('./linear_regression/dataset/train.csv')
-df_train = train_ld.pre_process(categorical, ordinal, remove)
+df_train = train_ld.preprocess(categorical, ordinal, remove)

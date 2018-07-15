@@ -8,16 +8,24 @@ class Loader():
         self.filename = filename
         self.data = pd.read_csv(filename)
 
-    def pre_process(self, categorical_col_names, ordinal_mapping, remove_col_names):
+    def preprocess(self, categorical_col_names, ordinal_mapping, remove_col_names):
         self.data = self.remove(self.data, remove_col_names)
         self.data = self.process_ordinal(self.data, ordinal_mapping)
         self.data = self.process_categorical(self.data, categorical_col_names)
+        self.data = self.set_nan_to_median(self.data)
         self.data = self.normalize(self.data)
 
-    def normalize(self, data):
+    def set_nan_to_median(self, data):
+        data = data.fillna(data.median())
+        return data
+
+    def normalize(self, data, scaler=None):
         "normalizes through min-max normalization"
-        normalized = preprocessing.minmax_scale(data)
-        return normalized
+        if scaler is None:
+            scaler = preprocessing.MinMaxScaler()
+            scaler.fit(data)
+        data[data.columns] = scaler.transform(data[data.columns])
+        return data
 
     def process_categorical(self, data, col_names, label_encoders=None, one_hot_encoder=None):
         data[pd.isnull(data[col_names])].fillna('nan')
@@ -27,8 +35,7 @@ class Loader():
                 label_encoder = preprocessing.LabelEncoder()
                 label_encoder.fit(data[col].astype(str))
                 label_encoders.append(label_encoder)
-
-        self.label_encoders = label_encoders
+            self.label_encoders = label_encoders
 
         for index in range(len(label_encoders)):
             col = col_names[index]
@@ -51,15 +58,8 @@ class Loader():
                 return_df=True
                 )
             ordinal_encoder.fit(data)
+            self.ordinal_encoder = ordinal_encoder
         data = ordinal_encoder.transform(data)
-        # if ordinal_encoders is None:
-        #     ordinal_encoders = [ce.ordinal.OrdinalEncoder() for _ in range(len(col_names))]
-
-        # for ordinal_encoder, m_dict in zip(ordinal_encoders, mappings):
-        #     ordinal_encoder.fit(data[col], mapping=mapping)
-        #     data[col] = ordinal_encoder.transform(data[col])
-
-        self.ordinal_encoders = ordinal_encoder
         return data
 
     def remove(self, data, col_names):
