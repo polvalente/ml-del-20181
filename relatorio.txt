@@ -1,0 +1,59 @@
+# Pre-processamento
+
+Identificacao de colunas categóricas:
+MSSub Class
+MSZoning
+Street
+Alley
+LotShape
+LandContour
+Utilities
+Lot Config
+Land Slope
+Neighborhood
+Condition1
+Condition2
+Bldg Type
+HouseStyle
+RoofStyle
+RoofMatl
+Exterior1st
+Exterior2nd
+MasVnrType
+MasVnrArea
+Foundation
+Heating
+HeatingQC
+CentralAir
+Electrical
+Functional
+GarageType
+MiscFeature
+SaleType
+
+Identificação de colunas ordinais:
+OverallQual
+OverallCond
+YearBuilt
+YearRemodAdd
+ExterQual
+ExterCond
+BsmtQual (para as colunas Bsmt, é interessante notar que TotalBsmtSF = 0 indica que não há porão)
+BsmtCond
+BsmtExposure
+BsmtFinType1
+BsmtFinType2
+KitchenQual
+FireplaceQu
+GarageYrBlt
+GarageFinish
+GarageQual
+GarageCond
+PavedDrive
+PoolQC
+Fence
+MoSold
+YrSold
+SaleCondition
+
+Será adicionada uma coluna que indica se há porão: HasBsmt
