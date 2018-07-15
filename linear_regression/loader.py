@@ -14,6 +14,7 @@ class Loader():
         self.data = self.process_categorical(self.data, categorical_col_names)
         self.data = self.set_nan_to_median(self.data)
         self.data = self.normalize(self.data)
+        return self.data
 
     def set_nan_to_median(self, data):
         data = data.fillna(data.median())

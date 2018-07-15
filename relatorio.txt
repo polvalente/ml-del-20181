@@ -56,4 +56,7 @@ MoSold
 YrSold
 SaleCondition
 
-Será adicionada uma coluna que indica se há porão: HasBsmt
+1 - As colunas ordinais foram processadas através do módulo category_encoders.ordinal.OrdinalEncoder, de modo que a ordenação semântica seja mantida.
+2 - As colunas categóricas foram convertidas para números através do módulo sklearn.preprocessing.LabelEncoder
+3 - Algumas colunas foram removidas arbitrariamente, por se tratarem de categorias, na minha opinião, subjetivas demais.
+    São elas: ["BsmtFinType1", "BsmtFinType2", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive"]
