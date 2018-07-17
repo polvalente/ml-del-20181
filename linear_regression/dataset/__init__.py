@@ -37,12 +37,6 @@ categorical = {
         "Pave",
         "NA"
     ],
-    "LotShape": [
-        "Reg",
-        "IR1",
-        "IR2",
-        "IR3"
-    ],
     "LandContour": [
         "Lvl",
         "Bnk",
@@ -61,11 +55,6 @@ categorical = {
         "CulDSac",
         "FR2",
         "FR3"
-    ],
-    "LandSlope": [
-        "Gtl",
-        "Mod",
-        "Sev"
     ],
     "Neighborhood": [
         "Blmngtn",
@@ -132,24 +121,6 @@ categorical = {
         "2.5Unf",
         "SFoyer",
         "SLvl"
-    ],
-    "RoofStyle": [
-        "Flat",
-        "Gable",
-        "Gambrel",
-        "Hip",
-        "Mansard",
-        "Shed"
-    ],
-    "RoofMatl": [
-        "ClyTile",
-        "CompShg",
-        "Membran",
-        "Metal",
-        "Roll",
-        "Tar&Grv",
-        "WdShake",
-        "WdShngl"
     ],
     "Exterior1st": [
        "AsbShng",
@@ -240,14 +211,6 @@ categorical = {
         "BuiltIn",
         "CarPort",
         "Detchd",
-        "NA"
-    ],
-    "MiscFeature": [
-        "Elev",
-        "Gar2",
-        "Othr",
-        "Shed",
-        "TenC",
         "NA"
     ],
     "SaleType": [
@@ -398,10 +361,39 @@ ordinal = [
             "Family": 1,
             "Partial": 0,
         }
+    },
+    {
+        "col": "LandSlope",
+        "mapping": {
+            "Gtl": 0,
+            "Mod": 1,
+            "Sev": 2
+        }
+    },
+    {
+        "col": "MoSold",
+        "mapping": {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 1,
+            5: 1,
+            6: 1,
+            7: 2,
+            8: 2,
+            9: 2,
+            10: 3,
+            11: 3,
+            12: 3
+        }
     }
 ]
 
 remove = [
+    "LotFrontage",
+    "LotShape",
+    "RoofStyle",
+    "RoofMatl",
     "MasVnrArea",
     "MasVnrType",
     "BsmtFinType1",
@@ -409,5 +401,12 @@ remove = [
     "GarageFinish",
     "GarageQual",
     "GarageCond",
-    "PavedDrive"
+    "PavedDrive",
+    "GarageArea",
+    "WoodDeckSF",
+    "OpenPorchSF",
+    "EnclosedPorch",
+    "3SsnPorch",
+    "ScreenPorch",
+    "MiscFeature"
     ]

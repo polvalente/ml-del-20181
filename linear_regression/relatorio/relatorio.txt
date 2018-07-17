@@ -89,3 +89,20 @@ O resultado obtido no Kaggle foi: 0.41885 (submission1.png)
     }
     O melhor estimador foi: SVR(C=50.0, cache_size=200, coef0=0.0, degree=2, epsilon=1.0, gamma='auto',
   kernel='linear', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+6 - Removendo mais parâmetros e mantendo o mesmo grid:
+    Predicting...SVR(C=50.0, cache_size=200, coef0=0.0, degree=2, epsilon=1.0, gamma='auto',
+  kernel='linear', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+7 - Reduzindo a resolução de "Month Sold" para trimestres e simplificando o grid de busca:
+    grid: {
+        'C': [1e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3],
+        'epsilon': [1e-3, 1e-2, 1e-1],
+        'kernel': ['linear'],
+        'degree': [2, 3, 4, 5]
+    }
+    O melhor estimador foi:
+        SVR(C=50.0, cache_size=200, coef0=0.0, degree=2, epsilon=0.1, gamma='auto',
+  kernel='linear', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+8 - Removendo a granularidade de mais variáveis ordinais subjetivas e mantendo o grid anterior
+    O melhor estimador foi:
+        SVR(C=50.0, cache_size=200, coef0=0.0, degree=2, epsilon=0.1, gamma='auto',
+  kernel='linear', max_iter=-1, shrinking=True, tol=0.001, verbose=False)

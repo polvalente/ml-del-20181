@@ -31,9 +31,22 @@ class Regressor():
                 svm.SVR(),
                 {
                     'C': [1e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3],
-                    'epsilon': [1e-3, 1e-2, 1e-1, 1e0],
+                    'epsilon': [1e-3, 1e-2],
                     'kernel': ['linear', 'rbf', 'poly'],
                     'degree': [2, 3, 4]
+                },
+                scoring='neg_mean_squared_log_error'
+            )
+        elif kind == 'SVM_GRID_SIMPLE':
+            from sklearn import svm
+            from sklearn.model_selection import GridSearchCV
+            self.regressor = GridSearchCV(
+                svm.SVR(),
+                {
+                    'C': [1e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3],
+                    'epsilon': [1e-3, 1e-2, 1e-1],
+                    'kernel': ['linear'],
+                    'degree': [2, 3, 4, 5]
                 },
                 scoring='neg_mean_squared_log_error'
             )
