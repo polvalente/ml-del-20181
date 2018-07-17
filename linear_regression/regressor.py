@@ -10,10 +10,15 @@ class Regressor():
     https://www.kaggle.com/c/house-prices-advanced-regression-techniques
     """
 
-    def __init__(self, loader, X, y):
+    def __init__(self, X, y, kind):
         self.X = X
         self.y = y
-        self.loader = loader
+        if kind.upper() == 'SVM':
+            from sklearn import svm
+            self.regressor = svm.SVR()
 
     def train(self):
-        raise NotImplementedError
+        self.regressor.fit(self.X, self.y)
+
+    def predict(self, X_test):
+        return self.regressor.predict(X_test)

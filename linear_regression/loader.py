@@ -18,29 +18,34 @@ class Loader():
             ordinal_encoder = previous_loader.ordinal_encoder
             label = previous_loader.label_encoders
             one_hot = previous_loader.one_hot_encoder
+            normalizer = previous_loader.normalizer
             if self.data.shape[1] != previous_loader.data.shape:
                 self.data = self.data.join(pd.DataFrame({'SalePrice': [0]*self.data.shape[0]}))
         else:
             ordinal_encoder = None
             label = None
             one_hot = None
+            normalizer = None
 
         self.data = self.remove(self.data, remove_col_names)
         self.data = self.process_ordinal(self.data, ordinal_mapping, ordinal_encoder)
         self.data = self.process_categorical(self.data, categorical_data, label, one_hot)
         self.data = self.set_nan_to_median(self.data)
-        self.data = self.normalize(self.data)
+        cols = self.data.columns.drop('SalePrice')
+        self.data[cols] = self.normalize(self.data[cols], normalizer)
         return self.data
 
     def set_nan_to_median(self, data):
         data = data.fillna(data.median())
         return data
 
-    def normalize(self, data):
-        "normalizes through min-max normalization"
-        scaler = preprocessing.MinMaxScaler()
-        scaler.fit(data)
-        data[data.columns] = scaler.transform(data[data.columns])
+    def normalize(self, data, normalizer=None):
+        "normalizes through standard normalization"
+        if normalizer is None:
+            normalizer = preprocessing.StandardScaler()
+            normalizer.fit(data)
+        data[data.columns] = normalizer.transform(data[data.columns])
+        self.normalizer = normalizer
         return data
 
     def process_categorical(self, data, labels, label_encoders=None, one_hot_encoder=None):
