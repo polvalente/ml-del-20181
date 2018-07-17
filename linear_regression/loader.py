@@ -4,24 +4,30 @@ import category_encoders as ce
 
 
 class Loader():
-    def __init__(self, filename, categorical=None, ordinal=None, remove=None):
-        # try:
-        #     self.filename = filename+'.ready'
-        #     self.data = pd.read_csv(self.filename)
-        # except:
+    def __init__(self, filename, categorical=None, ordinal=None, remove=None, previous_loader=None):
         self.filename = filename
         self.data = pd.read_csv(self.filename)
-        self.preprocess(categorical, ordinal, remove)
+        self.preprocess(categorical, ordinal, remove, previous_loader)
         self.data.to_csv(filename+'.ready')
-        self.filename += '.ready'
 
     def __call__(self):
         return self.split_data()
 
-    def preprocess(self, categorical_data, ordinal_mapping, remove_col_names):
+    def preprocess(self, categorical_data, ordinal_mapping, remove_col_names, previous_loader=None):
+        if previous_loader is not None:
+            ordinal_encoder = previous_loader.ordinal_encoder
+            label = previous_loader.label_encoders
+            one_hot = previous_loader.one_hot_encoder
+            if self.data.shape[1] != previous_loader.data.shape:
+                self.data = self.data.join(pd.DataFrame({'SalePrice': [0]*self.data.shape[0]}))
+        else:
+            ordinal_encoder = None
+            label = None
+            one_hot = None
+
         self.data = self.remove(self.data, remove_col_names)
-        self.data = self.process_ordinal(self.data, ordinal_mapping)
-        self.data = self.process_categorical(self.data, categorical_data)
+        self.data = self.process_ordinal(self.data, ordinal_mapping, ordinal_encoder)
+        self.data = self.process_categorical(self.data, categorical_data, label, one_hot)
         self.data = self.set_nan_to_median(self.data)
         self.data = self.normalize(self.data)
         return self.data
@@ -30,11 +36,10 @@ class Loader():
         data = data.fillna(data.median())
         return data
 
-    def normalize(self, data, scaler=None):
+    def normalize(self, data):
         "normalizes through min-max normalization"
-        if scaler is None:
-            scaler = preprocessing.MinMaxScaler()
-            scaler.fit(data)
+        scaler = preprocessing.MinMaxScaler()
+        scaler.fit(data)
         data[data.columns] = scaler.transform(data[data.columns])
         return data
 
