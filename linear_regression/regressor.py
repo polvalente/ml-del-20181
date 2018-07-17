@@ -42,5 +42,5 @@ class Regressor():
         self.regressor.fit(self.X, self.y)
 
     def predict(self, X_test):
-        print(self.regressor)
+        print(self.regressor.best_estimator_)
         return self.regressor.predict(X_test)
