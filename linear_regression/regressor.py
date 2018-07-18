@@ -1,4 +1,5 @@
 from .loader import Loader
+from numpy import expm1
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -43,17 +44,22 @@ class Regressor():
             self.regressor = GridSearchCV(
                 svm.SVR(),
                 {
-                    'C': [1e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3],
-                    'epsilon': [1e-3, 1e-2, 1e-1],
+                    'C': [1e0, 5e0, 1e1, 5e1, 1e2],
+                    'gamma': [1e-3, 1e-2, 1e-1],
                     'kernel': ['linear'],
-                    'degree': [2, 3, 4, 5]
+                    'degree': [2]
                 },
-                scoring='neg_mean_squared_log_error'
+                scoring='neg_mean_squared_log_error',
+                n_jobs=-1,
+                cv=7
             )
 
     def train(self):
         self.regressor.fit(self.X, self.y)
 
     def predict(self, X_test):
-        print(self.regressor.best_estimator_)
-        return self.regressor.predict(X_test)
+        try:
+            print(self.regressor.best_estimator_)
+        except:
+            pass
+        return expm1(self.regressor.predict(X_test))

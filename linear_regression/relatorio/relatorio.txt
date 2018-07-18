@@ -106,3 +106,10 @@ O resultado obtido no Kaggle foi: 0.41885 (submission1.png)
     O melhor estimador foi:
         SVR(C=50.0, cache_size=200, coef0=0.0, degree=2, epsilon=0.1, gamma='auto',
   kernel='linear', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+9 - A última tentativa com SVM apresentou uma melhora de cerca de 0.1 ponto.
+No pré-processamento, apliquei log(1 + y) na coluna de SalePrices, aplicando a operação inversa para calcular o preço estimado.
+
+estimador: SVR(C=100.0, cache_size=200, coef0=0.0, degree=2, epsilon=0.1, gamma=0.001,
+  kernel='linear', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+
+pontuação: 0.14881

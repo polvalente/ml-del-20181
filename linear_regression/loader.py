@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn import preprocessing
+from numpy import log1p
 import category_encoders as ce
 
 
@@ -33,6 +34,10 @@ class Loader():
         self.data = self.set_nan_to_median(self.data)
         cols = self.data.columns.drop('SalePrice')
         self.data[cols] = self.normalize(self.data[cols], normalizer)
+        try:
+            self.data['SalePrice'] = log1p(self.data['SalePrice'])
+        except:
+            pass
         return self.data
 
     def set_nan_to_median(self, data):
